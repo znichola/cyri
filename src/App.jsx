@@ -3,7 +3,7 @@
 // Renders the correct drill component based on active mode.
 
 import { useState, useEffect } from "react";
-import { styles } from "./styles/styles";
+import "./styles/styles.css";
 import { buildSession, buildChoices, isCorrect, SESSION_SIZE } from "./logic/game";
 import { ProgressBar, EndScreen } from "./components/DrillShell";
 import { LetterDrill } from "./components/LetterDrill";
@@ -72,15 +72,15 @@ export default function App() {
   }
 
   return (
-    <div style={styles.wrap}>
+    <div className="wrap">
       <ProgressBar idx={idx} done={done} />
 
       {/* Mode tabs */}
-      <div style={styles.modeTabs}>
+      <div className="mode-tabs">
         {MODES.map((m) => (
           <button
             key={m.id}
-            style={{ ...styles.modeTab, ...(mode === m.id ? styles.modeTabActive : {}) }}
+            className={mode === m.id ? "mode-tab mode-tab-active" : "mode-tab"}
             onClick={() => switchMode(m.id)}
           >
             {m.label}

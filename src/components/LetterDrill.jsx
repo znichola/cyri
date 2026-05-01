@@ -2,7 +2,7 @@
 // Shows a full Cyrillic word with one letter highlighted.
 // User taps the correct Latin equivalent from 4 choices.
 
-import { styles } from "../styles/styles";
+import "../styles/styles.css";
 import { getWordChars } from "../logic/game";
 import { ChoicesGrid, FeedbackLine, StatsRow } from "./DrillShell";
 
@@ -11,24 +11,21 @@ export function LetterDrill({ card, choices, answered, selectedChoice, correctCo
 
   return (
     <>
-      <div style={styles.wordDisplay}>
-        <div style={styles.cyrillicWord}>
+      <div className="word-display">
+        <div className="cyrillic-word">
           {chars.map(({ char, highlighted }, i) => (
             <span
               key={i}
-              style={{
-                ...styles.cyrillicLetter,
-                ...(highlighted ? styles.letterHighlight : styles.letterDim),
-              }}
+              className={highlighted ? "cyrillic-letter letter-highlight" : "cyrillic-letter letter-dim"}
             >
               {char}
             </span>
           ))}
         </div>
-        <div style={styles.meaning}>{card.meaning}</div>
+        <div className="meaning">{card.meaning}</div>
       </div>
 
-      <div style={styles.promptLabel}>
+      <div className="prompt-label">
         What is the latin equivalent of the highlighted letter?
       </div>
 

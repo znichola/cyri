@@ -2,7 +2,7 @@
 // Shows a Cyrillic word with one letter replaced by a blank "_".
 // User taps the correct Cyrillic letter (not Latin) that fills the gap.
 
-import { styles } from "../styles/styles";
+import "../styles/styles.css";
 import { getWordGapChars, shuffle } from "../logic/game";
 import { ChoicesGrid, FeedbackLine, StatsRow } from "./DrillShell";
 
@@ -25,24 +25,21 @@ export function WordGap({ card, choices, answered, selectedChoice, correctCount,
 
   return (
     <>
-      <div style={styles.wordDisplay}>
-        <div style={styles.cyrillicWord}>
+      <div className="word-display">
+        <div className="cyrillic-word">
           {chars.map(({ char, isGap }, i) => (
             <span
               key={i}
-              style={{
-                ...styles.cyrillicLetter,
-                ...(isGap ? styles.letterGap : styles.letterDim),
-              }}
+              className={isGap ? "cyrillic-letter letter-gap" : "cyrillic-letter letter-dim"}
             >
               {isGap ? "\u00A0\u00A0" : char}
             </span>
           ))}
         </div>
-        <div style={styles.meaning}>{card.meaning}</div>
+        <div className="meaning">{card.meaning}</div>
       </div>
 
-      <div style={styles.promptLabel}>
+      <div className="prompt-label">
         Which Cyrillic letter fills the gap?
       </div>
 
@@ -55,13 +52,16 @@ export function WordGap({ card, choices, answered, selectedChoice, correctCount,
       />
 
       {/* WordGap feedback shows Cyrillic = Latin mapping */}
-      <div style={{
-        ...styles.feedback,
-        ...(answered && selectedChoice === card.cyrillicLetter ? styles.feedbackCorrect : {}),
-        ...(answered && selectedChoice !== card.cyrillicLetter ? styles.feedbackWrong   : {}),
-      }}>
-        {answered ? `${card.cyrillicLetter} = ${card.latinLetter}` : ""}
-      </div>
+      {(() => {
+        let feedbackClass = "feedback";
+        if (answered && selectedChoice === card.cyrillicLetter) feedbackClass += " feedback-correct";
+        if (answered && selectedChoice !== card.cyrillicLetter) feedbackClass += " feedback-wrong";
+        return (
+          <div className={feedbackClass}>
+            {answered ? `${card.cyrillicLetter} = ${card.latinLetter}` : ""}
+          </div>
+        );
+      })()}
 
       <StatsRow correctCount={correctCount} idx={idx} />
     </>
