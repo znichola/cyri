@@ -63,4 +63,4 @@ Wrong choices should be letters that are visually or phonetically similar to the
 
 Pushes to `main` deploy automatically to GitHub Pages via the workflow in `.github/workflows/deploy.yml`.
 
-Live at: `https://znichola.github.io/cyri/`
+Live at: [https://znichola.github.io/cyri/](https://znichola.github.io/cyri/)
