@@ -1,158 +1,66 @@
 # Cyri
 
+A minimal flashcard app for learning the Serbian Cyrillic alphabet. Built for heritage learners who already speak Serbian and want to connect the sounds they know to the written Cyrillic script.
+
+
 ## Calude
 
 Intialised with this claude prompt [prompt](https://claude.ai/share/83333b63-fb12-473a-bbb2-3b64dd0c8f96)
 
-## drill-styles
 
-> **Neo Brutalist design tokens for the drill component system.**  
-> Hard edges. Yellow punches. Zero apologies.
+## How it works
 
----
+Two drill modes, each taking about 5–10 minutes:
 
-## What's in here
+**Letter drill** — a full Serbian word is shown in Cyrillic with one letter highlighted. Tap its Latin equivalent from four choices.
 
-A single shared token file — `styles.ts` — that exports two objects used across all drill components:
+**Word gap** — a Serbian word is shown with one letter missing. Tap the correct Cyrillic letter that fills the gap.
 
-- **`colors`** — the full palette: base, accents, correct/wrong states
-- **`styles`** — every inline style definition in the UI, from the progress bar down to the restart button
+Both modes draw from a pool of 30 common Serbian words, each anchored to one letter of the alphabet. Sessions are shuffled and capped at 10 cards.
 
-Keeping all visual decisions in one place means restyling the entire app is a one-file job.
+## Running locally
 
----
-
-## Design language
-
-This system uses **Neo Brutalism** — raw, high-contrast, and physically tactile.
-
-| Principle | In practice |
-|---|---|
-| Hard borders | `2px solid #000` everywhere, `border-radius: 0` |
-| Offset shadows | `4px 4px 0 #000` — no blur, no spread |
-| High contrast | Pure black on warm off-white (`#FFFEF0`) |
-| Colour as signal | Yellow = accent, Lime = correct, Red = wrong |
-| Uppercase type | `text-transform: uppercase` + wide `letter-spacing` |
-| Physical press feel | Active states: `translate(2px, 2px)` + reduced shadow |
-
----
-
-## Palette
-
-```
-#FFFEF0   Warm off-white      Base background
-#FFE034   Yellow              Primary accent, progress fill, buttons
-#C1FF72   Lime green          Correct answer state
-#FF6B6B   Raw red             Wrong answer state
-#000000   Black               All borders, text, shadows
+```bash
+npm install
+npm run dev
 ```
 
----
+## Project structure
 
-## Usage
-
-Import what you need:
-
-```ts
-import { colors, styles } from './styles';
-
-// Inline styles
-<div style={styles.wrap}>
-  <div style={styles.progressTrack}>
-    <div style={{ ...styles.progressFill, width: `${progress}%` }} />
-  </div>
-</div>
-
-// Compose states
-<button
-  style={{
-    ...styles.choiceBtn,
-    ...(isCorrect && styles.choiceBtnCorrect),
-    ...(isWrong   && styles.choiceBtnWrong),
-  }}
->
-  {option}
-</button>
+```
+src/
+├── App.jsx                  # orchestrator: mode tabs, session state
+├── data/
+│   └── words.js             # Serbian word database (30 entries)
+├── logic/
+│   └── game.js              # shuffle, session building, answer checking
+├── styles/
+│   └── styles.js            # shared style tokens
+└── components/
+    ├── DrillShell.jsx        # shared UI: progress bar, choices, end screen
+    ├── LetterDrill.jsx       # mode 1
+    └── WordGap.jsx           # mode 2
 ```
 
----
+## Extending the word list
 
-## Active / press states
+Each entry in `src/data/words.js` follows this shape:
 
-The token file cannot express `:active` pseudo-states — handle these in component logic:
-
-```ts
-const [pressed, setPressed] = useState(false);
-
-<button
-  style={{
-    ...styles.choiceBtn,
-    ...(pressed && {
-      transform: 'translate(2px, 2px)',
-      boxShadow: '2px 2px 0 #000',
-    }),
-  }}
-  onMouseDown={() => setPressed(true)}
-  onMouseUp={()   => setPressed(false)}
-/>
+```js
+{
+  word: "ШУМА",          // Serbian word in Cyrillic
+  meaning: "forest",     // English translation
+  highlight: 0,          // index of the letter being taught
+  cyrillicLetter: "Ш",   // Cyrillic letter at that position
+  latinLetter: "Š",      // correct Latin equivalent
+  wrong: ["S", "CH", "Ž"] // 3 plausible distractors
+}
 ```
 
-The same pattern applies to `restartBtn` and `modeTab`.
+Wrong choices should be letters that are visually or phonetically similar to the correct answer — this is what makes the drill useful rather than trivial.
 
----
+## Deploying
 
-## Token reference
+Pushes to `main` deploy automatically to GitHub Pages via the workflow in `.github/workflows/deploy.yml`.
 
-### `colors`
-
-| Token | Value | Used for |
-|---|---|---|
-| `text` | `#000` | Primary text, borders |
-| `textMuted` | `#333` | Secondary text |
-| `textFaint` | `#555` | Tertiary / metadata |
-| `textDim` | `#777` | Dimmed letters |
-| `border` | `#000` | All borders |
-| `accent` | `#FFE034` | Progress, prompt label, restart button |
-| `accentAlt` | `#C1FF72` | Correct state background |
-| `accentWrong` | `#FF6B6B` | Wrong state background |
-| `correctBg/Border/Text` | lime / black / black | Correct choice button |
-| `wrongBg/Border/Text` | red / black / black | Wrong choice button |
-
-### `styles` — key entries
-
-| Key | Element |
-|---|---|
-| `wrap` | Outermost container |
-| `progressTrack` / `progressFill` | Top progress bar |
-| `cyrillicWord` | Large word display |
-| `letterHighlight` | Stressed letter marker |
-| `promptLabel` | "Pick the stress" label pill |
-| `choicesGrid` / `choiceBtn` | 2-column answer grid |
-| `choiceBtnCorrect` / `choiceBtnWrong` | Answer feedback states |
-| `feedback` / `feedbackCorrect` / `feedbackWrong` | Inline feedback line |
-| `modeTabs` / `modeTab` / `modeTabActive` | Mode switcher |
-| `statsRow` | Bottom score/streak row |
-| `endScore` / `restartBtn` | End screen |
-
----
-
-## What's not covered here
-
-These files would need updates to complete a full reskin:
-
-- **Component files** — for `:active` press handlers and hover effects
-- **`global.css` / `index.css`** — `body` background, font import for `DM Mono`
-- **`promptLabel` wrapper** — currently styled as `inline-block`; the component's container element may need `text-align: center` to centre it
-
----
-
-## Font
-
-The system uses **DM Mono** as its monospace face, with `Georgia` for the large Cyrillic word display.
-
-```html
-<link
-  href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&display=swap"
-  rel="stylesheet"
-/>
-```
+Live at: `https://znichola.github.io/cyri/`

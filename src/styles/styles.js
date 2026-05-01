@@ -23,7 +23,7 @@ export const colors = {
 export const styles = {
   wrap: {
     fontFamily: "'DM Mono', 'Courier New', monospace",
-    maxWidth: 480,
+    width: "100%",
     margin: "0 auto",
     padding: "2rem 1.5rem",
     minHeight: "100vh",
