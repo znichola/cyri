@@ -5,10 +5,11 @@
   --color-text-muted: #333;
   --color-text-faint: #555;
   --color-text-dim: #777;
+  --color-text-light: #e9e8dc;
   --color-border: #000;
   --color-track: #000;
   --color-accent: #FFE034;
-  --color-accent-alt: #C1FF72;
+  --color-accent-alt: #26387b;
   --color-accent-wrong: #FF6B6B;
 
   --color-correct-bg: #C1FF72;
@@ -167,7 +168,7 @@
 
 .hint-btn {
   background: var(--color-accent-alt);
-  color: #000;
+  color: var(--color-text-light);
   border: 2px solid #000;
   border-radius: 0;
   padding: 4px 12px;
