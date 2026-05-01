@@ -2,6 +2,7 @@
 // Shows a Cyrillic word with one letter replaced by a blank "_".
 // User taps the correct Cyrillic letter (not Latin) that fills the gap.
 
+import { useState } from "react";
 import "../styles/styles.css";
 import { getWordGapChars, shuffle } from "../logic/game";
 import { ChoicesGrid, FeedbackLine, StatsRow } from "./DrillShell";
@@ -21,6 +22,7 @@ export function buildCyrillicChoices(card) {
 }
 
 export function WordGap({ card, choices, answered, selectedChoice, correctCount, idx, onChoice }) {
+  const [hintShown, setHintShown] = useState(false);
   const chars = getWordGapChars(card);
 
   return (
@@ -36,7 +38,12 @@ export function WordGap({ card, choices, answered, selectedChoice, correctCount,
             </span>
           ))}
         </div>
-        <div className="meaning">{card.meaning}</div>
+        <div className="hint-cont">
+          {hintShown && <div className="meaning">{card.meaning}</div>}
+          <button className="hint-btn" onClick={() => setHintShown(!hintShown)}>
+            {hintShown ? "Hide" : "Hint"}
+          </button>
+        </div>
       </div>
 
       <div className="prompt-label">

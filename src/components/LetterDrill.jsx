@@ -2,11 +2,13 @@
 // Shows a full Cyrillic word with one letter highlighted.
 // User taps the correct Latin equivalent from 4 choices.
 
+import { useState } from "react";
 import "../styles/styles.css";
 import { getWordChars } from "../logic/game";
 import { ChoicesGrid, FeedbackLine, StatsRow } from "./DrillShell";
 
 export function LetterDrill({ card, choices, answered, selectedChoice, correctCount, idx, onChoice }) {
+  const [hintShown, setHintShown] = useState(false);
   const chars = getWordChars(card);
 
   return (
@@ -22,7 +24,12 @@ export function LetterDrill({ card, choices, answered, selectedChoice, correctCo
             </span>
           ))}
         </div>
-        <div className="meaning">{card.meaning}</div>
+        <div className="hint-cont">
+          {hintShown && <div className="meaning">{card.meaning}</div>}
+          <button className="hint-btn" onClick={() => setHintShown(!hintShown)}>
+            {hintShown ? "Hide" : "Hint"}
+          </button>
+        </div>
       </div>
 
       <div className="prompt-label">

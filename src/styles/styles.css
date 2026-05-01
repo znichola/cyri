@@ -158,6 +158,34 @@
   box-shadow: 4px 4px 0 #000;
 }
 
+.hint-cont {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.hint-btn {
+  background: var(--color-accent-alt);
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 0;
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 #000;
+  transition: transform 0.08s, box-shadow 0.08s;
+  margin-top: 8px;
+  display: block;
+}
+
+.hint-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000;
+}
+
 /* Feedback line */
 .feedback {
   text-align: center;
